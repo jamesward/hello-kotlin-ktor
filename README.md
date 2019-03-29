@@ -1,4 +1,4 @@
 Hello Kotlin Ktor
 -----------------
 
-[Deploy](https://console.cloud.google.com/cloudshell/environment/view?shellonly=true&cloudshell_git_repo=https://github.com/jamesward/hello-kotlin-ktor.git&cloudshell_image=gcr.io/cr-demo-235923/cr-button)
+[Deploy](https://console.cloud.google.com/cloudshell/editor?shellonly=true&cloudshell_git_repo=https://github.com/jamesward/hello-kotlin-ktor.git&cloudshell_image=gcr.io/cr-demo-235923/cr-button)
