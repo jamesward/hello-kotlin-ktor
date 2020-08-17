@@ -4,8 +4,7 @@ import java.util.concurrent.*
 plugins {
     java
     application
-    kotlin("jvm") version "1.3.20"
-    id("com.github.johnrengelman.shadow") version "4.0.4"
+    kotlin("jvm") version "1.4.0"
 }
 
 repositories {
@@ -14,9 +13,9 @@ repositories {
 }
 
 dependencies {
-    compile("io.ktor:ktor-server-core:1.1.3")
-    compile("io.ktor:ktor-server-cio:1.1.3")
-    compile("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.ktor:ktor-server-core:1.3.2-1.4.0-rc")
+    implementation("io.ktor:ktor-server-cio:1.3.2-1.4.0-rc")
+    runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
 }
 
 java {
@@ -31,13 +30,7 @@ application {
     mainClassName = "WebAppKt"
 }
 
-tasks.create("stage") {
-    dependsOn("shadowJar")
-}
-
-
 // one task that does both the continuous compile and the run
-
 tasks.create("dev") {
     doLast {
         fun fork(task: String, vararg args: String): Future<*> {
@@ -66,3 +59,7 @@ tasks.create("dev") {
 }
 
 defaultTasks("dev")
+
+tasks.replace("assemble").dependsOn("installDist")
+
+tasks.create("stage").dependsOn("installDist")
