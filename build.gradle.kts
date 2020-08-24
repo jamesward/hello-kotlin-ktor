@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:1.3.2-1.4.0-rc")
-    implementation("io.ktor:ktor-server-cio:1.3.2-1.4.0-rc")
+    implementation("io.ktor:ktor-server-core:1.4.0")
+    implementation("io.ktor:ktor-server-cio:1.4.0")
     runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
 }
 
