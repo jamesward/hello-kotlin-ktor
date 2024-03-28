@@ -1,64 +1,26 @@
-import org.gradle.tooling.GradleConnector
-import java.util.concurrent.*
-
 plugins {
-    java
     application
-    kotlin("jvm") version "1.4.0"
+    kotlin("jvm") version "1.9.22"
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:1.4.0")
-    implementation("io.ktor:ktor-server-cio:1.4.0")
-    runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    implementation("io.ktor:ktor-server-core:2.3.7")
+    implementation("io.ktor:ktor-server-cio:2.3.7")
+    implementation("io.ktor:ktor-server-call-logging:2.3.7")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.12")
 }
 
 application {
-    mainClassName = "WebAppKt"
+    mainClass = "WebAppKt"
 }
 
-// one task that does both the continuous compile and the run
-tasks.create("dev") {
-    doLast {
-        fun fork(task: String, vararg args: String): Future<*> {
-            return Executors.newSingleThreadExecutor().submit {
-                GradleConnector.newConnector()
-                               .forProjectDirectory(project.projectDir)
-                               .connect()
-                               .use {
-                                   it.newBuild()
-                                     .addArguments(*args)
-                                     .setStandardError(System.err)
-                                     .setStandardInput(System.`in`)
-                                     .setStandardOutput(System.out)
-                                     .forTasks(task)
-                                     .run()
-                               }
-            }
-        }
-
-        val classesFuture = fork("classes", "-t")
-        val runFuture = fork("run")
-
-        classesFuture.get()
-        runFuture.get()
-    }
+kotlin {
+    jvmToolchain(8)
 }
-
-defaultTasks("dev")
 
 tasks.replace("assemble").dependsOn("installDist")
 
